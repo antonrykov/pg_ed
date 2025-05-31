@@ -58,3 +58,20 @@ https://postgrespro.ru/education
 > ORDER BY aircraft_code, fare_conditions;
 
 ![image](https://github.com/user-attachments/assets/8ecf06a7-3ec3-4b52-a433-0a16c6eeb3ff)
+
+
+# Уровень изоляции Read Uncommitted
+
+> CREATE TABLE aircrafts_tmp
+> 
+> AS SELECT * FROM aircrafts;
+
+Апдейтим значние поля в транзакции, но не комитим её
+
+![image](https://github.com/user-attachments/assets/2136d15c-48ee-4f05-a264-faf0aa541a62)
+
+Во втором терминале проверям значние поля которое обновляли в 1 терминале
+
+![image](https://github.com/user-attachments/assets/6d12b3ed-02c9-451d-88f1-7cbffaaec970)
+
+Таким образом, вторая транзакция не видит изменение значения атрибута range, произведенное в первой — незафиксированной — транзакции. Это объясняется тем, что в PostgreSQL реализация уровня изоляции Read Uncommitted более строгая, чем того требует стандарт языка SQL. Фактически этот уровень тождественен уровню изоляции Read Committed.
